@@ -28,14 +28,21 @@ function start(response) {
     //------------错误的非阻塞【我们的代码是同步执行的，这就意味着在调用exec()之后，Node.js会立即执行 return content ；在这个时候，content仍然是“empty”，因为传递给exec()的回调函数还未执行到——因为exec()的操作是异步的。
     //exec() 它从Node.js来执行一个shell命令。
     //在上述例子中，我们用它来获取当前目录下所有的文件（“ls-lah”）,然后，当 /start URL请求的时候将文件信息输出到浏览器中。
-    exec("ls-lah", function (error, stdout, stderr) {
-        response.writeHead(200, {"Content-Type": "text/plain"});
-        response.write(stdout);
-        response.end();
-    })
-    //------------
-
+    // exec("ls-lah", function (error, stdout, stderr) {
+    //     content = stdout
+    // })
     // return content
+
+
+    //------------
+    exec("find /",
+    { timeout: 10000, maxBuffer: 20000*1024 },
+    function (error, stdout, stderr) {
+      response.writeHead(200, {"Content-Type": "text/plain"});
+      console.log(111,stdout)
+      response.write('111');
+      response.end();
+    });
 }
 
 function upload(response) {
@@ -47,5 +54,16 @@ function upload(response) {
     // return "Hello Upload"
 }
 
+function imports(response){
+    console.log("Request handler 'imports' was called")
+    var body = '<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/></head>' +
+    '<body><form action="/upload" method="post"><textarea name="text" rows="20" cols="60"></textarea><input type="submit" value="Submit text"/></form></body></html>'
+
+    response.writeHead(200, { "Content-Type": "text/html" });
+    response.write(body);
+    response.end();
+}
+
 exports.start = start
 exports.upload = upload
+exports.imports = imports

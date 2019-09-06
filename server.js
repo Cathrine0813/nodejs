@@ -6,9 +6,17 @@ var url = require('url')
 
 function star(route, handle) {
     function onRequest(request, response) {
+        var postData = '';
         var pathname = url.parse(request.url).pathname;//浏览器请求的URL路径
         //得以使用路由来将请求 以URL路径为基准 映射到处理程序上
         console.log("Request for " + pathname + " received.");
+
+        request.setEncoding("utf8");
+        request.addListener("data", function (postDataChunk) {
+            postData += postDataChunk;
+            console.log("Received POST data chunk" + postDataChunk + ".")
+        })
+
         route(handle, pathname, response)
         
 
