@@ -9,7 +9,8 @@ var handle = {}
 handle["/"] = requestHandlers.start;
 handle["/start"] = requestHandlers.start;
 handle["/upload"] = requestHandlers.upload;
-handle["/imports"] = requestHandlers.imports;
+// handle["/imports"] = requestHandlers.imports;
+handle["/show"] = requestHandlers.show;
 
 
 server.star(router.route, handle)

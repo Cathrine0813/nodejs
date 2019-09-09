@@ -1,8 +1,10 @@
 // 路由模块
-function route(handle, pathname, response) {
+// function route(handle, pathname, response, postData) {
+function route(handle, pathname, response, request) {
     console.log("About to route a request for" + pathname)
     if (typeof handle[pathname] === 'function') {
-        handle[pathname](response)
+        // handle[pathname](response, postData)
+        handle[pathname](response, request)
         // return handle[pathname]()
     } else {
         console.log("No request handler found for" + pathname)

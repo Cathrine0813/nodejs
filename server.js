@@ -11,13 +11,20 @@ function star(route, handle) {
         //得以使用路由来将请求 以URL路径为基准 映射到处理程序上
         console.log("Request for " + pathname + " received.");
 
-        request.setEncoding("utf8");
-        request.addListener("data", function (postDataChunk) {
-            postData += postDataChunk;
-            console.log("Received POST data chunk" + postDataChunk + ".")
-        })
+        // //1、设置了接收数据的编码格式为UTF-8
+        // request.setEncoding("utf8");//这部分node-formidable自身会处理
+        // //2、注册了“data”事件的监听器，用于收集每次接收到的新数据块，并将其赋值给postData 变量，
+        // request.addListener("data", function (postDataChunk) {
+        //     postData += postDataChunk;
+        //     console.log("Received POST data chunk" + postDataChunk + ".")
+        // })
+        // //3、将请求路由的调用移到end事件处理程序中，以确保它只会当所有数据接收完毕后才触发，并且只触发一次。
+        // //我们同时还把POST数据传递给请求路由，因为这些数据，请求处理程序会用到。
+        // request.addListener("end", function () {
+        //     route(handle, pathname,response, postData)
+        // })
 
-        route(handle, pathname, response)
+        route(handle, pathname, response, request)
         
 
         // response.writeHead(200, { "Content-Type": "text/plain" });
